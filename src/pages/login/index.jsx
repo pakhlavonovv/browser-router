@@ -1,14 +1,23 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './style.css'
 
 const Index = () => {
     const [form, setForm] = useState({})
+    const navigate = useNavigate()
+    const [isError, setIsError] = useState(false);
     const handleChange = (event) => {
         const {name, value} = event.target
         setForm({...form, [name]:value})
+        setIsError(false);
     }
-    const handleSubmit = () => {
+    const handleSubmit = (event) => {
         event.preventDefault();
+        if(form.username === 'Admin' && form.password == '0818'){
+            navigate('/cards')
+        } else {
+            setIsError(true);
+        }   
     }
   return (
     <>
@@ -19,9 +28,19 @@ const Index = () => {
     <form onSubmit={handleSubmit}>
       <h3 className='form_title'>Login Here</h3>
       <label htmlFor="username">Username</label>
-      <input type="text" placeholder="Email or Phone" name  ="username" onChange={handleChange} />
+      <input type="text" placeholder="Email or Phone" name  ="username" onChange={handleChange} style={{
+          border: isError ? "2px solid red" : "2px solid #ccc",
+          padding: "10px",
+          borderRadius: "5px",
+          outline: "none",
+        }} />
       <label htmlFor="password">Password</label>
-      <input type="password" placeholder="Password" name    ="password" onChange={handleChange}/>
+      <input type="password" placeholder="Password" name    ="password" onChange={handleChange} style={{
+          border: isError ? "2px solid red" : "2px solid #ccc",
+          padding: "10px",
+          borderRadius: "5px",
+          outline: "none",
+        }}/>
       <br />
       <button type='submit'>Log In</button>
       <div className="social">
